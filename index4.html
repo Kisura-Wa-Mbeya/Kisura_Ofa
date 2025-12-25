@@ -1,0 +1,190 @@
+<!DOCTYPE html>
+<html lang="sw">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Malipo na Ofa</title> 
+<style>
+  body {
+    margin: 0;
+    padding: 0;
+    font-family: Arial, sans-serif;
+    height: 100vh;
+    background-image: url('kisura.jpg'); /* Replace with your background image if needed */
+    background-size: cover;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+  .container {
+    width: 90%;
+    max-width: 600px;
+    padding: 20px;
+    box-sizing: border-box;
+    background-color: rgba(0, 0, 0, 0.3);
+    border-radius: 10px;
+    color: white;
+  }
+  /* Style for all instruction texts to keep spacing, font size, and weight */
+  #payText p, #payText span, #payText pre {
+    font-family: Arial, sans-serif;
+    font-size: 14px; /* Uniform font size */
+    font-weight: bold; /* Uniform font weight */
+    line-height: 1.4;
+    white-space: pre-wrap; /* Preserve spacing and line breaks */
+  }
+  /* Style for the back button */
+  #backButton {
+    margin-top: 12px;
+    padding: 10px 20px;
+    font-size: 12px;
+    cursor: pointer;
+    border: none;
+    background-color: #2196F3;
+    color: white;
+    border-radius: 5px;
+  }
+  #backButton:hover {
+    background-color: #ADD8E6;
+  }
+  /* Style for the copy button to be oval */
+  #copyButton {
+    margin-left: 10px;
+    background-color: #555;
+    border: none;
+    padding: 6px 12px;
+    border-radius: 50px; /* Makes it oval */
+    color: white;
+    cursor: pointer;
+  }
+  #copyButton:hover {
+    background-color: #777;
+  }
+  /* Style for the copy alert message */
+  #copyAlert {
+    position: absolute;
+    background-color: #ccc;
+    padding: 4px 8px;
+    border-radius: 4px;
+    font-size: 12px;
+    color: #000;
+    opacity: 0;
+    transition: opacity 0.3s;
+    z-index: 9999;
+  }
+</style>
+</head>
+<body>
+
+<div class="container">
+  <h2 style="color: white;">Malipo Na ofa</h2>
+  <div id="payText"></div>
+  <button id="backButton">Nyuma</button>
+</div>
+
+<!-- Alert message for copy feedback -->
+<div id="copyAlert"></div>
+
+<script>
+// Function to get URL parameters
+function getQueryParam(param) {
+  const urlParams = new URLSearchParams(window.location.search);
+  return urlParams.get(param);
+}
+
+// Retrieve name and phone_number from URL parameters
+const name = getQueryParam('name') || 'Hakuna Jina';
+const phoneNumber = getQueryParam('phone_number') || 'Hakuna Namba';
+
+// Define the instruction texts
+const instructionText1 = `Hongera ${name} (${phoneNumber}) Umechaguliwa Kupokea Tsh200,000.
+
+Unatakiwa Kulipia Tsh5000, Ada Ya Utoaji Ili Upokee Ofa Yako.  
+
+Fuata Maelezo Haya Ili Ufanye Malipo Yako. Malipo Yanafanywa kwenye Nambari Rasmi Ya katibu (Amos Cosmas Paulo).
+
+Baada Ya Kufanya Malipo Yako Utapokea Ofa Yako Ya Tsh200,000. Baada Ya Dakika Tano.
+
+Utapokea Ofa Yako Kwenye Laini Yako Kisha Utapigiwa Simu Ili uweze Kuthibitisha.
+
+Nambari Ya Malipo Hii Hapa. Thibitisha Nambari Usije Ukakosea.
+`;
+
+const instructionText2 = '        Nambari: 0767905046';
+
+const instructionText3 = `        Jina: Amos Cosmas Paulo
+
+        Mtandao: Vodacom
+
+        Kiasi: 5000`;
+
+// Populate payText
+const payTextDiv = document.getElementById('payText');
+payTextDiv.innerHTML = '';
+
+// Create the instructionText1 paragraph
+const instructionPara1 = document.createElement('p');
+instructionPara1.textContent = instructionText1;
+payTextDiv.appendChild(instructionPara1);
+
+// Create the instructionText2 with copy button
+const instructionDiv2 = document.createElement('div');
+instructionDiv2.style.display = 'flex';
+instructionDiv2.style.alignItems = 'center';
+instructionDiv2.style.marginBottom = '10px';
+
+const instructionText2Span = document.createElement('span');
+instructionText2Span.textContent = instructionText2;
+
+const copyBtn = document.createElement('button');
+copyBtn.textContent = 'Copy';
+copyBtn.id = 'copyButton';
+// Styling for oval shape through CSS class
+// Alternatively, you can style directly here:
+copyBtn.style.marginLeft = '10px';
+copyBtn.style.backgroundColor = '#555';
+copyBtn.style.border = 'none';
+copyBtn.style.padding = '6px 12px';
+copyBtn.style.borderRadius = '50px'; // Oval shape
+copyBtn.style.color = 'white';
+copyBtn.style.cursor = 'pointer';
+
+instructionDiv2.appendChild(instructionText2Span);
+instructionDiv2.appendChild(copyBtn);
+payTextDiv.appendChild(instructionDiv2);
+
+// Create the instructionText3 as preformatted text
+const instructionPara3 = document.createElement('pre');
+instructionPara3.textContent = instructionText3;
+payTextDiv.appendChild(instructionPara3);
+
+// Alert message element
+const copyAlert = document.getElementById('copyAlert');
+
+document.getElementById('copyButton').addEventListener('click', () => {
+  const phoneNumberValue = instructionText2.split(':')[1].trim();
+  navigator.clipboard.writeText(phoneNumberValue).then(() => {
+    // Show alert above the button
+    const rect = document.getElementById('copyButton').getBoundingClientRect();
+    copyAlert.textContent = 'Nambari imakopiwa kwenye clipboard!';
+    copyAlert.style.top = (window.scrollY + rect.top - 30) + 'px';
+    copyAlert.style.left = (window.scrollX + rect.left + rect.width/2 - copyAlert.offsetWidth/2) + 'px';
+    copyAlert.style.opacity = 1;
+    // Hide after 2 seconds
+    setTimeout(() => {
+      copyAlert.style.opacity = 0;
+    }, 2000);
+  });
+});
+
+// Back button handler
+document.getElementById('backButton').addEventListener('click', () => {
+  window.location.href = 'index3.html';
+});
+</script>
+</body>
+</html>
+
+
+
+
